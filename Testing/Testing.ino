@@ -74,27 +74,38 @@ void loop()
 
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                                                                                        // FollowMyWall Function
+                                                                                        // FollowMyWall Function 
 void followMyWall(int v, String side)
 {
   int distanceFromWall = 5;    // units in cm
   String oppSide = "";
-  int sensorVal = readSensor("right");
+  int rsensorVal = readSensor("right");
+  int lsensorVal = readSensor("left");
   if(side.equalsIgnoreCase("right")) oppSide = "left";
   else oppSide = "right";
   
-  if(sensorVal - distanceFromWall < 1 || sensorVal - distanceFromWall == 1)
+  
+  if(rsensorVal - distanceFromWall - 1 < 0 && lsensorVal - distanceFromWall - 1 > 0)
+  {
+    setSpeed(oppSide, v ); 
+    setSpeed(side, v + turnSpeed);  
+  }
+  else if (rsensorVal - distanceFromWall - 1 > 0 )
+  {
+    forward(100);  
+  }
+  
+  
+  if(lsensorVal - distanceFromWall - 1 < 0 && rsensorVal - distanceFromWall - 1 > 0)
   {
     setSpeed(oppSide, v + turnSpeed); 
-    setSpeed(side, v - turnSpeed);  
+    setSpeed(side, v );  
   }
-  else if (sensorVal - distanceFromWall > 1 )
+  else if (lsensorVal - distanceFromWall - 1 > 0 )
   {
-   setSpeed(oppSide, v - turnSpeed); 
-   setSpeed(side, v + turnSpeed );  
-  }
-}
-
+   forward(100);  
+  }  
+}  
 
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
